@@ -6,11 +6,9 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:31:23 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 11:24:03 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 12:20:39 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "../header/push_swap.h"
 
 #include "../header/push_swap.h"
  

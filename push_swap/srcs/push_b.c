@@ -6,7 +6,7 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:32:13 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 12:14:13 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 12:19:36 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,9 @@ static void	push_b_nonlisr(t_stack **a, t_stack **b, ssize_t pivot)
  
 void	push_b_nonlis(t_stack **a, t_stack **b)
 {
-	t_stack	*tmp;
-	ssize_t	max_dr;
-	ssize_t	max_drr;
 	ssize_t	pivot;
  
 	pivot = ft_stacksize(*a) * get_cfg()->split / get_cfg()->splits;
-	max_dr = 0;
-	max_drr = -1;
-	tmp = *a;
-	while (tmp)
-	{
-		if (tmp->lis == 1)
-		{
-			if (max_drr == -1)
-				max_drr = tmp->d_down;
-			max_dr += 1;
-		}
-		else if (max_dr > 0)
-			max_dr -= 1;
-		tmp = tmp->next;
-	}
 	push_b_nonlisr(a, b, pivot);
 }
 void	sort_3(t_stack **a)

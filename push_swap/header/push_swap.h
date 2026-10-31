@@ -6,7 +6,7 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:43:33 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 12:11:00 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 12:20:20 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,8 @@
  
 # include "../libft/libft.h"
 # include <stdbool.h>
- 
-# ifndef BUDGET
-#  define BUDGET 150000000
-# endif
-# ifndef MAX_RESTARTS
-#  define MAX_RESTARTS 15000
-# endif
- 
+
+
 typedef struct s_push_swap
 {
 	char	***in;
