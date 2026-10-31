@@ -3,84 +3,130 @@
 /*                                                        :::      ::::::::   */
 /*   push_b.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megardes <megardes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:32:13 by codespace         #+#    #+#             */
-/*   Updated: 2025/05/11 18:59:01 by megardes         ###   ########.fr       */
+/*   Updated: 2026/10/31 10:35:01 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/push_swap.h"
 
-static void	push_b_nonlisr(t_stack **a, t_stack **b)
+void	set_zero_b(t_push_b *push_b)
 {
-	t_stack	*tmp;
-	ssize_t	lis_count;
-
-	tmp = *a;
-	lis_count = 0;
-	while (tmp)
-	{
-		if (tmp->lis == 1)
-			lis_count++;
-		tmp = tmp->next;
-	}
-	while (ft_stacksize(*a) != lis_count)
-	{
-		if ((*a)->lis == 0)
-			p(a, b, "pb");
-		else
-			r(a, b, "ra");
-	}
+	push_b->a_direction = R;
+	push_b->b_direction = R;
+	push_b->n_a_rotation = 0;
+	push_b->n_b_rotation = 0;
 }
 
-static void	push_b_nonlisrr(t_stack **a, t_stack **b)
-{
-	t_stack	*tmp;
-	ssize_t	lis_count;
+t_stack *find_optimal_push_b();
 
-	tmp = *a;
-	lis_count = 0;
-	while (tmp)
-	{
-		if (tmp->lis)
-			lis_count++;
-		tmp = tmp->next;
-	}
-	while (ft_stacksize(*a) != lis_count)
-	{
-		if ((*a)->lis == 0)
-			p(a, b, "pb");
+
+void	actual_push_b(t_stack **a, t_stack **b, t_push_b *push_b)
+{
+	ssize_t	i;
+
+	i = -1;
+	while (++i < push_b->n_a_rotation) {
+		if (push_b->a_direction == push_b->b_direction)
+		{
+			if (push_b->a_direction == R)
+			{				
+				if (i < push_b->n_b_rotation)
+					r(a, b, "rr");
+				else
+					r(a, b, "ra");
+			}
+			else
+			{
+				if (i < push_b->n_b_rotation)
+					rr(a, b, "rrr");
+				else
+					rr(a, b, "rra");
+			}
+		}
 		else
-			rr(a, b, "rra");
+		{
+			if (push_b->a_direction == R)
+				r(a, b, "ra");
+			else
+				rr(a, b, "rra");
+		}
 	}
+	p(a, b, "pb");
+}
+
+void	push_b_opt(t_stack **a, t_stack **b, t_push_b *push_b)
+{
+	t_stack *tmp;
+	t_stack *tmp_2;
+	t_stack *opt;
+
+	set_d(*a, *b);
+	tmp = *a;
+	while (tmp && tmp->lis == 1)
+		tmp = tmp->next;
+	tmp_2 = ft_stacklast(*a);
+	while (tmp_2 && tmp_2->lis)
+		tmp_2 = tmp_2->prev;
+	if (tmp_2->d_down > tmp->d_up)
+	{
+		push_b->a_direction = R;
+		opt = tmp;
+		push_b->n_a_rotation = opt->d_up;
+	}
+	else
+	{
+		push_b->a_direction = RR;
+		opt = tmp_2;
+		push_b->n_a_rotation = opt->d_down;
+	}
+	tmp_2 = NULL;
+	if (*b)
+	{
+		tmp = *b;
+		while (tmp)
+		{
+			if (tmp->num < opt->num)
+				if (!tmp_2 || tmp->num > tmp_2->num)
+					tmp_2 = tmp;
+			tmp = tmp->next;
+		}
+		if (tmp_2)
+		{
+			if (tmp_2->d_up <= tmp_2->d_down)
+			{
+				push_b->b_direction = R;
+				push_b->n_b_rotation = tmp_2->d_up;	
+			}
+			else
+			{
+				push_b->b_direction = RR;
+				push_b->n_b_rotation = tmp_2->d_down;	
+			}
+		}
+	}
+	actual_push_b(a, b, push_b);
 }
 
 void	push_b_nonlis(t_stack **a, t_stack **b)
 {
-	t_stack	*tmp;
-	ssize_t	max_dr;
-	ssize_t	max_drr;
+	t_stack		*tmp;
+	t_push_b	push_b;
+	ssize_t		lis_count;
 
-	max_dr = 0;
-	max_drr = -1;
+	set_zero_b(&push_b);
+	lis_count = 0;
 	tmp = *a;
-	while (tmp)
-	{
+	while (tmp) {
 		if (tmp->lis == 1)
-		{
-			if (max_drr == -1)
-				max_drr = tmp->d_down;
-			max_dr += 1;
-		}
-		else if (max_dr > 0)
-			max_dr -= 1;
+			lis_count++;
 		tmp = tmp->next;
 	}
-	if (max_dr > max_drr)
-		push_b_nonlisrr(a, b);
-	else
-		push_b_nonlisr(a, b);
+	while (ft_stacksize(*a) != lis_count) {
+		push_b_opt(a, b, &push_b);
+	}
 }
 
 void	sort_3(t_stack **a)

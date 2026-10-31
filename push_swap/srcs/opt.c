@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   opt.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megardes <megardes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 10:41:53 by codespace         #+#    #+#             */
-/*   Updated: 2025/05/11 17:23:56 by megardes         ###   ########.fr       */
+/*   Updated: 2026/10/31 10:28:53 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,9 @@
 
 t_stack	*find_opt(t_stack *a, t_stack *b)
 {
-	t_stack	*tmp;
 	ssize_t	x;
 	ssize_t	n;
 
-	tmp = a;
 	x = max(a);
 	n = min(a);
 	if (b->opt_node && b->opt_node->prev)

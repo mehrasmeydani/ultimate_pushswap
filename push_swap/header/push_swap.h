@@ -6,7 +6,7 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:43:33 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 09:21:38 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 10:28:13 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "../libft/libft.h"
 # include <stdbool.h>
+
+# define R 0
+# define RR 1
 
 typedef struct s_push_swap
 {
@@ -45,6 +48,14 @@ typedef struct s_stack
 	struct s_stack	*prev;	
 	struct s_stack	*opt_node;
 }	t_stack;
+
+typedef struct s_push_b
+{
+	bool	a_direction;
+	bool	b_direction;
+	ssize_t	n_b_rotation;
+	ssize_t	n_a_rotation;
+} t_push_b;
 
 long	ft_atol(const char *nptr);
 void	init(t_ps *in);

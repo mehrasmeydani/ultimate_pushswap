@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: megardes <megardes@student.42.fr>          +#+  +:+       +#+         #
+#    By: mehras <mehras@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/28 14:44:18 by codespace         #+#    #+#              #
-#    Updated: 2025/05/18 18:15:09 by megardes         ###   ########.fr        #
+#    Updated: 2026/10/31 10:30:08 by mehras           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CFLAGS		= -Wall -Wextra -Werror
 LIBFT		= cd libft
 OBJS		= ${SRCS:.c=.o}
 RM			= rm -f
-CC			= cc
+CC			= cc -g
 MAKEFLAGS	+= --no-print-directory
 
 all:		${NAME}
@@ -31,7 +31,7 @@ all:		${NAME}
 
 ${NAME}:	${OBJS}
 			@(${LIBFT} && make all)
-			cc ${CFLAGS} -I ${HEAD} ${SRCS} -o ${NAME} ./libft/libft.a
+			${CC} ${CFLAGS} -I ${HEAD} ${SRCS} -o ${NAME} ./libft/libft.a
 
 clean: 
 			@${LIBFT} && make clean
