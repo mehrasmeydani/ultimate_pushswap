@@ -6,7 +6,7 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:32:13 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 10:52:58 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 11:02:28 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ static ssize_t	to_push(t_stack *a)
 	}
 	return (n);
 }
- 
-/* After each pb, numbers below the pivot go to the bottom of B.
-   The rb waits one step so it can merge with the next ra into rr. */
+
 static void	push_b_nonlisr(t_stack **a, t_stack **b, ssize_t pivot)
 {
 	ssize_t	left;
