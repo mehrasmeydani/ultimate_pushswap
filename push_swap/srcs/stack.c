@@ -1,0 +1,75 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: megardes <megardes@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/01 12:04:10 by codespace         #+#    #+#             */
+/*   Updated: 2025/05/08 11:45:10 by megardes         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../header/push_swap.h"
+
+t_stack	*ft_stacknew(t_ps *in, ssize_t i)
+{
+	t_stack	*new;
+
+	new = (t_stack *)ft_calloc(sizeof(t_stack), 1);
+	if (!new)
+		return (NULL);
+	new->next = NULL;
+	new->prev = NULL;
+	new->opt_node = NULL;
+	new->lis = in->lis[i];
+	new->num = in->idx[i];
+	return (new);
+}
+
+t_stack	*ft_stacklast(t_stack *stack)
+{
+	while (stack && stack->next)
+		stack = stack->next;
+	return (stack);
+}
+
+t_stack	*ft_stackfirst(t_stack *stack)
+{
+	while (stack && stack->prev)
+		stack = stack->prev;
+	return (stack);
+}
+
+void	ft_stackadd_back(t_stack **stack, t_stack *new)
+{
+	t_stack	*tmp;
+
+	if (stack)
+	{
+		tmp = ft_stacklast(*stack);
+		if (tmp)
+		{
+			tmp->next = new;
+			new->prev = tmp;
+		}
+		else
+			*stack = new;
+	}
+}
+
+void	ft_stackclear(t_stack **stack)
+{
+	t_stack	*tmp;
+
+	if (stack)
+	{
+		*stack = ft_stackfirst(*stack);
+		while (*stack)
+		{
+			tmp = *stack;
+			*stack = (*stack)->next;
+			free(tmp);
+		}
+	}
+}
