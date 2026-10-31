@@ -6,127 +6,99 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:32:13 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 10:35:01 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 10:52:58 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/push_swap.h"
 
-void	set_zero_b(t_push_b *push_b)
+static ssize_t	to_push(t_stack *a)
 {
-	push_b->a_direction = R;
-	push_b->b_direction = R;
-	push_b->n_a_rotation = 0;
-	push_b->n_b_rotation = 0;
+	ssize_t	n;
+ 
+	n = 0;
+	while (a)
+	{
+		n += !a->lis;
+		a = a->next;
+	}
+	return (n);
 }
-
-t_stack *find_optimal_push_b();
-
-
-void	actual_push_b(t_stack **a, t_stack **b, t_push_b *push_b)
+ 
+/* After each pb, numbers below the pivot go to the bottom of B.
+   The rb waits one step so it can merge with the next ra into rr. */
+static void	push_b_nonlisr(t_stack **a, t_stack **b, ssize_t pivot)
 {
-	ssize_t	i;
-
-	i = -1;
-	while (++i < push_b->n_a_rotation) {
-		if (push_b->a_direction == push_b->b_direction)
+	ssize_t	left;
+	int		pend;
+ 
+	left = to_push(*a);
+	pend = 0;
+	while (left > 0)
+	{
+		if (try_swap(a, b, &left))
+			continue ;
+		if ((*a)->lis == 0 && left--)
 		{
-			if (push_b->a_direction == R)
-			{				
-				if (i < push_b->n_b_rotation)
-					r(a, b, "rr");
-				else
-					r(a, b, "ra");
-			}
-			else
-			{
-				if (i < push_b->n_b_rotation)
-					rr(a, b, "rrr");
-				else
-					rr(a, b, "rra");
-			}
+			if (pend)
+				r(a, b, "rb");
+			pend = ((*a)->num < pivot);
+			p(a, b, "pb");
+		}
+		else if (pend && pend--)
+			r(a, b, "rr");
+		else
+			r(a, b, "ra");
+	}
+	if (pend)
+		r(a, b, "rb");
+}
+ 
+static void	push_b_nonlisrr(t_stack **a, t_stack **b, ssize_t pivot)
+{
+	ssize_t	left;
+ 
+	left = to_push(*a);
+	while (left > 0)
+	{
+		if (try_swap(a, b, &left))
+			continue ;
+		if ((*a)->lis == 0 && left--)
+		{
+			p(a, b, "pb");
+			if ((*b)->num < pivot)
+				r(a, b, "rb");
 		}
 		else
-		{
-			if (push_b->a_direction == R)
-				r(a, b, "ra");
-			else
-				rr(a, b, "rra");
-		}
+			rr(a, b, "rra");
 	}
-	p(a, b, "pb");
 }
-
-void	push_b_opt(t_stack **a, t_stack **b, t_push_b *push_b)
-{
-	t_stack *tmp;
-	t_stack *tmp_2;
-	t_stack *opt;
-
-	set_d(*a, *b);
-	tmp = *a;
-	while (tmp && tmp->lis == 1)
-		tmp = tmp->next;
-	tmp_2 = ft_stacklast(*a);
-	while (tmp_2 && tmp_2->lis)
-		tmp_2 = tmp_2->prev;
-	if (tmp_2->d_down > tmp->d_up)
-	{
-		push_b->a_direction = R;
-		opt = tmp;
-		push_b->n_a_rotation = opt->d_up;
-	}
-	else
-	{
-		push_b->a_direction = RR;
-		opt = tmp_2;
-		push_b->n_a_rotation = opt->d_down;
-	}
-	tmp_2 = NULL;
-	if (*b)
-	{
-		tmp = *b;
-		while (tmp)
-		{
-			if (tmp->num < opt->num)
-				if (!tmp_2 || tmp->num > tmp_2->num)
-					tmp_2 = tmp;
-			tmp = tmp->next;
-		}
-		if (tmp_2)
-		{
-			if (tmp_2->d_up <= tmp_2->d_down)
-			{
-				push_b->b_direction = R;
-				push_b->n_b_rotation = tmp_2->d_up;	
-			}
-			else
-			{
-				push_b->b_direction = RR;
-				push_b->n_b_rotation = tmp_2->d_down;	
-			}
-		}
-	}
-	actual_push_b(a, b, push_b);
-}
-
+ 
 void	push_b_nonlis(t_stack **a, t_stack **b)
 {
-	t_stack		*tmp;
-	t_push_b	push_b;
-	ssize_t		lis_count;
-
-	set_zero_b(&push_b);
-	lis_count = 0;
+	t_stack	*tmp;
+	ssize_t	max_dr;
+	ssize_t	max_drr;
+ 
+	max_dr = 0;
+	max_drr = -1;
 	tmp = *a;
-	while (tmp) {
+	while (tmp)
+	{
 		if (tmp->lis == 1)
-			lis_count++;
+		{
+			if (max_drr == -1)
+				max_drr = tmp->d_down;
+			max_dr += 1;
+		}
+		else if (max_dr > 0)
+			max_dr -= 1;
 		tmp = tmp->next;
 	}
-	while (ft_stacksize(*a) != lis_count) {
-		push_b_opt(a, b, &push_b);
-	}
+	if (max_dr > max_drr)
+		push_b_nonlisrr(a, b, ft_stacksize(*a) / 2);
+	else
+		push_b_nonlisr(a, b, ft_stacksize(*a) / 2);
 }
 
 void	sort_3(t_stack **a)

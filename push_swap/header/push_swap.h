@@ -6,7 +6,7 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:43:33 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 10:28:13 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 10:53:47 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ ssize_t	min(t_stack *a);
 
 void	push_swap(t_stack **a, t_stack **b, ssize_t size);
 void	push_b_nonlis(t_stack **a, t_stack **b);
+int		try_swap(t_stack **a, t_stack **b, ssize_t *left);
 void	set_d(t_stack *a, t_stack *b);
 ssize_t	is_sorted(t_stack *a);
 void	sort_3(t_stack **a);
