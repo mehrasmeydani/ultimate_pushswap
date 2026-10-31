@@ -6,7 +6,7 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:32:13 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 11:02:28 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 12:14:13 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,49 +27,29 @@ static ssize_t	to_push(t_stack *a)
 
 static void	push_b_nonlisr(t_stack **a, t_stack **b, ssize_t pivot)
 {
-	ssize_t	left;
-	int		pend;
+	ssize_t	n_to_push;
+	int		left_over_rb;
  
-	left = to_push(*a);
-	pend = 0;
-	while (left > 0)
+	n_to_push = to_push(*a);
+	left_over_rb = 0;
+	while (n_to_push > 0)
 	{
-		if (try_swap(a, b, &left))
+		if (try_swap(a, b, &n_to_push))
 			continue ;
-		if ((*a)->lis == 0 && left--)
+		if ((*a)->lis == 0 && n_to_push--)
 		{
-			if (pend)
+			if (left_over_rb)
 				r(a, b, "rb");
-			pend = ((*a)->num < pivot);
+			left_over_rb = (((*a)->num < pivot) != get_cfg()->bigger_is_bottom);
 			p(a, b, "pb");
 		}
-		else if (pend && pend--)
+		else if (left_over_rb && left_over_rb--)
 			r(a, b, "rr");
 		else
 			r(a, b, "ra");
 	}
-	if (pend)
+	if (left_over_rb)
 		r(a, b, "rb");
-}
- 
-static void	push_b_nonlisrr(t_stack **a, t_stack **b, ssize_t pivot)
-{
-	ssize_t	left;
- 
-	left = to_push(*a);
-	while (left > 0)
-	{
-		if (try_swap(a, b, &left))
-			continue ;
-		if ((*a)->lis == 0 && left--)
-		{
-			p(a, b, "pb");
-			if ((*b)->num < pivot)
-				r(a, b, "rb");
-		}
-		else
-			rr(a, b, "rra");
-	}
 }
  
 void	push_b_nonlis(t_stack **a, t_stack **b)
@@ -77,7 +57,9 @@ void	push_b_nonlis(t_stack **a, t_stack **b)
 	t_stack	*tmp;
 	ssize_t	max_dr;
 	ssize_t	max_drr;
+	ssize_t	pivot;
  
+	pivot = ft_stacksize(*a) * get_cfg()->split / get_cfg()->splits;
 	max_dr = 0;
 	max_drr = -1;
 	tmp = *a;
@@ -93,12 +75,8 @@ void	push_b_nonlis(t_stack **a, t_stack **b)
 			max_dr -= 1;
 		tmp = tmp->next;
 	}
-	if (max_dr > max_drr)
-		push_b_nonlisrr(a, b, ft_stacksize(*a) / 2);
-	else
-		push_b_nonlisr(a, b, ft_stacksize(*a) / 2);
+	push_b_nonlisr(a, b, pivot);
 }
-
 void	sort_3(t_stack **a)
 {
 	if (is_sorted(*a))

@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   ops.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megardes <megardes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:38:03 by codespace         #+#    #+#             */
-/*   Updated: 2025/05/08 08:11:34 by megardes         ###   ########.fr       */
+/*   Updated: 2026/10/31 11:13:01 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/push_swap.h"
-
+ 
 static void	swap(t_stack **a)
 {
 	t_stack	*tmp;
-
+ 
 	tmp = (*a)->next;
 	(*a)->next = tmp->next;
 	if (tmp->next)
@@ -25,7 +25,7 @@ static void	swap(t_stack **a)
 	(*a)->prev = tmp;
 	(*a) = tmp;
 }
-
+ 
 void	s(t_stack **a, t_stack **b, char *c)
 {
 	if (c[1] == 'a')
@@ -46,13 +46,13 @@ void	s(t_stack **a, t_stack **b, char *c)
 		s(a, b, " b");
 	}
 	if (c[0] != ' ')
-		ft_putendl_fd(c, 1);
+		put_op(c);
 }
-
+ 
 static void	push(t_stack **a, t_stack **b)
 {
 	t_stack	*tmp;
-
+ 
 	tmp = (*a)->next;
 	(*a)->next = *b;
 	if (*b)
@@ -64,7 +64,7 @@ static void	push(t_stack **a, t_stack **b)
 	}
 	*a = tmp;
 }
-
+ 
 void	p(t_stack **a, t_stack **b, char *c)
 {
 	if (c[1] == 'a')
@@ -79,5 +79,5 @@ void	p(t_stack **a, t_stack **b, char *c)
 			return ;
 		push(a, b);
 	}
-	ft_putendl_fd(c, 1);
+	put_op(c);
 }

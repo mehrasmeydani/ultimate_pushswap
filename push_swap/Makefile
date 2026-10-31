@@ -6,22 +6,22 @@
 #    By: mehras <mehras@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/28 14:44:18 by codespace         #+#    #+#              #
-#    Updated: 2026/10/31 10:54:01 by mehras           ###   ########.fr        #
+#    Updated: 2026/10/31 11:14:29 by mehras           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC			= main.c init.c ft_splits.c frees.c lis.c stack.c stack2.c ft_atol.c\
 			ft_sort_long_tab.c check.c ft_nums.c ops.c direction.c opt.c ops2.c\
-			max_min.c push_b.c push_swap.c swap_b.c
+			max_min.c push_b.c swap_b.c push_swap.c out.c solve.c 
 SRCS		= ${addprefix ${PRE}, ${SRC}}
 PRE			= ./srcs/
 HEAD		= ./header/
 NAME		= push_swap
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -O2
 LIBFT		= cd libft
 OBJS		= ${SRCS:.c=.o}
 RM			= rm -f
-CC			= cc -g
+CC			= cc
 MAKEFLAGS	+= --no-print-directory
 
 all:		${NAME}

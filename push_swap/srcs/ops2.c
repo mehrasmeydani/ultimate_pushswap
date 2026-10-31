@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ops2.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megardes <megardes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:25:58 by codespace         #+#    #+#             */
-/*   Updated: 2025/05/08 08:11:26 by megardes         ###   ########.fr       */
+/*   Updated: 2026/10/31 11:13:15 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/push_swap.h"
-
+ 
 static void	rotate(t_stack **a)
 {
 	t_stack	*tmp;
-
+	t_stack	*last;
+ 
 	tmp = (*a)->next;
-	(*a)->prev = ft_stacklast(*a);
-	ft_stacklast(*a)->next = *a;
+	last = ft_stacklast(*a);
+	(*a)->prev = last;
+	last->next = *a;
 	(*a)->next = NULL;
 	tmp->prev = NULL;
 	*a = tmp;
 }
-
+ 
 void	r(t_stack **a, t_stack **b, char *c)
 {
 	if (c[1] == 'a')
@@ -44,21 +46,23 @@ void	r(t_stack **a, t_stack **b, char *c)
 		r(a, b, " b");
 	}
 	if (c[0] != ' ')
-		ft_putendl_fd(c, 1);
+		put_op(c);
 }
-
+ 
 static void	rrotate(t_stack **a)
 {
 	t_stack	*tmp;
-
-	tmp = ft_stacklast(*a)->prev;
-	(*a)->prev = ft_stacklast(*a);
-	ft_stacklast(*a)->next = *a;
+	t_stack	*last;
+ 
+	last = ft_stacklast(*a);
+	tmp = last->prev;
+	(*a)->prev = last;
+	last->next = *a;
 	tmp->next->prev = NULL;
 	tmp->next = NULL;
 	*a = (*a)->prev;
 }
-
+ 
 void	rr(t_stack **a, t_stack **b, char *c)
 {
 	if (c[2] == 'a')
@@ -79,5 +83,5 @@ void	rr(t_stack **a, t_stack **b, char *c)
 		rr(a, b, "  b");
 	}
 	if (c[0] != ' ')
-		ft_putendl_fd(c, 1);
+		put_op(c);
 }

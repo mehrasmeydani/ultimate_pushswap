@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: megardes <megardes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 11:28:59 by codespace         #+#    #+#             */
-/*   Updated: 2025/05/11 18:59:30 by megardes         ###   ########.fr       */
+/*   Updated: 2026/10/31 11:09:41 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,12 @@ void	push_swap(t_stack **a, t_stack **b, ssize_t size)
 {
 	ssize_t	pushed;
 	ssize_t	c;
-
+ 
 	pushed = 0;
 	c = 0;
 	if (size == 3)
 		return (sort_3(a));
-	while (pushed == 0 || size != ft_stacksize(*a))
+	while ((pushed == 0 || size != ft_stacksize(*a)) && !get_buf()->fail)
 	{
 		set_d(*a, *b);
 		if (pushed == 0)
@@ -94,6 +94,8 @@ void	push_swap(t_stack **a, t_stack **b, ssize_t size)
 		turn_till_opt(a, b, c);
 		p(a, b, "pa");
 	}
+	if (get_buf()->fail)
+		return ;
 	set_d(*a, *b);
 	find_top(a);
 }

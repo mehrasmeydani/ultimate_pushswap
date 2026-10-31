@@ -6,19 +6,23 @@
 /*   By: mehras <mehras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:43:33 by codespace         #+#    #+#             */
-/*   Updated: 2026/10/31 10:53:47 by mehras           ###   ########.fr       */
+/*   Updated: 2026/10/31 12:11:00 by mehras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-
+ 
 # include "../libft/libft.h"
 # include <stdbool.h>
-
-# define R 0
-# define RR 1
-
+ 
+# ifndef BUDGET
+#  define BUDGET 150000000
+# endif
+# ifndef MAX_RESTARTS
+#  define MAX_RESTARTS 15000
+# endif
+ 
 typedef struct s_push_swap
 {
 	char	***in;
@@ -31,7 +35,7 @@ typedef struct s_push_swap
 	ssize_t	*lis_util2;
 	ssize_t	size;
 }	t_ps;
-
+ 
 typedef struct s_stack
 {
 	ssize_t			num;
@@ -48,15 +52,24 @@ typedef struct s_stack
 	struct s_stack	*prev;	
 	struct s_stack	*opt_node;
 }	t_stack;
-
-typedef struct s_push_b
+ 
+typedef struct s_buf
 {
-	bool	a_direction;
-	bool	b_direction;
-	ssize_t	n_b_rotation;
-	ssize_t	n_a_rotation;
-} t_push_b;
-
+	char	*ops;
+	ssize_t	len;
+	ssize_t	cap;
+	ssize_t	limit;
+	bool	fail;
+}	t_buf;
+ 
+typedef struct s_cfg
+{
+	ssize_t			tie;
+	ssize_t			bigger_is_bottom;
+	ssize_t			split;
+	ssize_t			splits;
+}	t_cfg;
+ 
 long	ft_atol(const char *nptr);
 void	init(t_ps *in);
 char	***ft_splits(ssize_t argc, char **argv);
@@ -90,6 +103,7 @@ void	uu(t_stack **a, t_stack **b);
 
 void	set_opt(t_stack *a, t_stack *b);
 t_stack	*find_opt(t_stack *a, t_stack *b);
+t_stack	*find_opt_mm(t_stack *a, t_stack *b, ssize_t *mm);
 
 ssize_t	max(t_stack *a);
 ssize_t	min(t_stack *a);
@@ -97,6 +111,12 @@ ssize_t	min(t_stack *a);
 void	push_swap(t_stack **a, t_stack **b, ssize_t size);
 void	push_b_nonlis(t_stack **a, t_stack **b);
 int		try_swap(t_stack **a, t_stack **b, ssize_t *left);
+t_buf	*get_buf(void);
+void	put_op(char *c);
+void	print_ops(t_buf *b);
+bool	solve(t_ps *ps);
+t_cfg	*get_cfg(void);
+ssize_t	ft_rand(void);
 void	set_d(t_stack *a, t_stack *b);
 ssize_t	is_sorted(t_stack *a);
 void	sort_3(t_stack **a);
